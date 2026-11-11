@@ -1,0 +1,27 @@
+# tollgate.yaml
+upstreams:
+  notes:
+    command: python
+    args: [examples/notes_server.py]
+  weather:
+    command: python
+    args: [examples/evil_server.py]   # written in Step 5
+
+# First matching rule wins. `tool` is a glob over "<upstream>__<tool>".
+# `when` maps argument names to regexes that must all match.
+rules:
+  - tool: "notes__delete_*"
+    action: approve
+    reason: deleting data is irreversible
+  - tool: "notes__write_note"
+    when: { title: "^(welcome|contacts)$" }
+    action: deny
+    reason: protected notes are read-only
+  - tool: "notes__*"
+    action: allow
+  - tool: "weather__get_forecast"
+    action: allow
+
+default_action: approve        # anything not listed needs a human
+trust_on_first_use: true       # Step 6
+data_dir: .tollgate
