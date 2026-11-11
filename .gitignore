@@ -10,3 +10,7 @@ wheels/
 .venv
 CLAUDE.md
 Build Tollgate an MCP Security Gateway.md
+
+# Tollgate runtime data (keep the tool lockfile tracked)
+.tollgate/*
+!.tollgate/tools.lock.json
